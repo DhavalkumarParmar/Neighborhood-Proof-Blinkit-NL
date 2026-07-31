@@ -1,0 +1,36 @@
+{
+  "normal": {
+    "skuId": "BEA-0001",
+    "title": "Aurvi 10% Niacinamide Face Serum",
+    "forced": {
+      "ST-ALK": {
+        "households": 212,
+        "returns": 9
+      }
+    }
+  },
+  "honest-negative": {
+    "skuId": "BEA-0003",
+    "title": "Sattva Skin Onion Hair Oil",
+    "forced": {
+      "ST-ALK": {
+        "households": 38,
+        "returns": 11
+      }
+    }
+  },
+  "widened-to-city": {
+    "skuId": "PET-0010",
+    "title": "Bhaukaal Pet Co Cat Scratching Post",
+    "forced": {
+      "ST-ALK": {
+        "households": 14,
+        "returns": 1
+      },
+      "ST-GTR": {
+        "households": 27,
+        "returns": 3
+      }
+    }
+  }
+}

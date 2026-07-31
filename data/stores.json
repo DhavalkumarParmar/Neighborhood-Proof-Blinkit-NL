@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ST-ALK",
+    "name": "Alkapuri",
+    "city": "Vadodara",
+    "area": "Alkapuri, Vadodara",
+    "pincode": "390007",
+    "density": "high",
+    "densityFactor": 1
+  },
+  {
+    "id": "ST-GTR",
+    "name": "Gotri",
+    "city": "Vadodara",
+    "area": "Gotri Road, Vadodara",
+    "pincode": "390021",
+    "density": "low",
+    "densityFactor": 0.45
+  },
+  {
+    "id": "ST-N62",
+    "name": "Sector 62",
+    "city": "Noida",
+    "area": "Sector 62, Noida",
+    "pincode": "201309",
+    "density": "high",
+    "densityFactor": 0.92
+  },
+  {
+    "id": "ST-N128",
+    "name": "Sector 128",
+    "city": "Noida",
+    "area": "Sector 128, Noida",
+    "pincode": "201304",
+    "density": "medium",
+    "densityFactor": 0.5
+  },
+  {
+    "id": "ST-KRL",
+    "name": "Karjat",
+    "city": "Karjat",
+    "area": "Karjat, Raigad",
+    "pincode": "410201",
+    "density": "very-low",
+    "densityFactor": 0.11
+  }
+]

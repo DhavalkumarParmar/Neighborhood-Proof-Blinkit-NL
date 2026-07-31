@@ -1,0 +1,35 @@
+[
+  {
+    "id": "regular",
+    "name": "Priya Shah",
+    "label": "Grocery-only regular",
+    "blurb": "Orders atta, milk and vegetables every week. Has never opened a beauty page.",
+    "storeId": "ST-ALK",
+    "interests": [
+      "beauty",
+      "home"
+    ]
+  },
+  {
+    "id": "parent",
+    "name": "Ankit Verma",
+    "label": "Young parent",
+    "blurb": "Buys diapers and wipes at odd hours. Careful about what touches the baby.",
+    "storeId": "ST-N62",
+    "interests": [
+      "baby",
+      "home"
+    ]
+  },
+  {
+    "id": "bachelor",
+    "name": "Rohit Kadam",
+    "label": "Bachelor snacker",
+    "blurb": "Late-night chips and cold drinks. New pincode, very few orders around him.",
+    "storeId": "ST-KRL",
+    "interests": [
+      "electronics",
+      "home"
+    ]
+  }
+]

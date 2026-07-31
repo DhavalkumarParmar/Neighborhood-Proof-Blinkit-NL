@@ -1,0 +1,24 @@
+{
+  "name": "neighborhood-proof",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "data": "node scripts/generate-data.mjs",
+    "check:retrieval": "node --experimental-strip-types scripts/check-retrieval.mjs",
+    "check:summary": "node --experimental-strip-types scripts/check-summary.mjs"
+  },
+  "dependencies": {
+    "next": "16.2.12",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "^5.9.2"
+  }
+}
