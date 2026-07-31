@@ -45,6 +45,7 @@ export type BrowseItem = {
   discountPercent: number;
   proofLine: string;
   hasProof: boolean;
+  image: string | null;
 };
 
 const TAB_LABEL: Record<string, string> = {
@@ -167,7 +168,12 @@ export function BrowseClient({
                 <span className="pcard-fav">
                   <HeartIcon />
                 </span>
-                <Thumb brand={item.brand} name={item.name} category={item.category} />
+                <Thumb
+                  brand={item.brand}
+                  name={item.name}
+                  category={item.category}
+                  image={item.image}
+                />
                 <div className="pcard-dots">
                   <i data-on="true" />
                   <i />

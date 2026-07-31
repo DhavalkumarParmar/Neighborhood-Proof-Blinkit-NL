@@ -10,6 +10,7 @@
 import { redirect } from "next/navigation";
 import { BrowseClient, type BrowseItem } from "@/components/BrowseClient";
 import { listingProofLine } from "@/lib/copy";
+import { imageFor } from "@/lib/images";
 import {
   CATEGORY_ORDER,
   catalog,
@@ -54,6 +55,7 @@ export default async function BrowsePage({
         discountPercent: item.discountPercent,
         proofLine: facts.noData ? "No orders near you yet" : listingProofLine(facts),
         hasProof: !facts.noData,
+        image: imageFor(item.id),
       };
     });
 

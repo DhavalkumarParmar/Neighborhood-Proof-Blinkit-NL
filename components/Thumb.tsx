@@ -1,7 +1,10 @@
 /**
- * Stand-in for product photography. Real catalogue images are not part of a
- * concept demo, so each SKU gets a stable tinted tile derived from its brand -
- * consistent between the listing and the product page.
+ * Product imagery.
+ *
+ * Renders a real photo when one exists in public/products (see the README
+ * there), and otherwise a stable tinted tile derived from the brand. Both
+ * variants keep the same footprint, so a catalogue that is only partly
+ * photographed still lays out evenly.
  */
 
 const TINTS: Record<string, [string, string]> = {
@@ -26,51 +29,45 @@ export function Thumb({
   brand,
   name,
   category,
+  image,
   variant = "card",
 }: {
   brand: string;
   name: string;
   category: string;
+  image?: string | null;
   variant?: "card" | "pdp";
 }) {
   const [from, to] = TINTS[category] ?? ["#f5f5f5", "#e9e9e9"];
   const label = `${brand} ${name}`;
+  const isPdp = variant === "pdp";
 
-  if (variant === "pdp") {
+  if (image) {
     return (
-      <div
-        className="pdp-media"
-        style={{ background: `linear-gradient(155deg, ${from}, ${to})` }}
-        role="img"
-        aria-label={label}
-      >
-        <div>
-          <div>{shortLabel(brand)}</div>
-          <div style={{ fontSize: 14, fontWeight: 600, marginTop: 10, letterSpacing: 0 }}>
-            {brand}
-          </div>
-        </div>
+      <div className={isPdp ? "pdp-media" : "thumb"} data-photo="true">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={image} alt={label} loading={isPdp ? "eager" : "lazy"} />
       </div>
     );
   }
 
   return (
     <div
-      style={{
-        aspectRatio: "1 / 1",
-        borderRadius: 8,
-        display: "grid",
-        placeItems: "center",
-        fontWeight: 800,
-        fontSize: 21,
-        letterSpacing: "-0.03em",
-        color: "rgba(0,0,0,0.4)",
-        background: `linear-gradient(155deg, ${from}, ${to})`,
-      }}
+      className={isPdp ? "pdp-media" : "thumb"}
+      style={{ background: `linear-gradient(155deg, ${from}, ${to})` }}
       role="img"
       aria-label={label}
     >
-      {shortLabel(brand)}
+      {isPdp ? (
+        <div>
+          <div>{shortLabel(brand)}</div>
+          <div style={{ fontSize: 14, fontWeight: 600, marginTop: 10, letterSpacing: 0 }}>
+            {brand}
+          </div>
+        </div>
+      ) : (
+        shortLabel(brand)
+      )}
     </div>
   );
 }

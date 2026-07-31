@@ -345,6 +345,41 @@ button {
   position: relative;
 }
 
+/* Both the photo and the tinted-tile fallback keep the same footprint, so a
+ * partly-photographed catalogue still lays out evenly. */
+.thumb {
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  /* minmax(0, 1fr) keeps aspect-ratio authoritative: without it a tall photo
+   * sets the row height and stretches the tile. */
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: -0.03em;
+  color: rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.thumb img,
+.pdp-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.thumb[data-photo="true"] {
+  background: #fff;
+}
+
+.pdp-media[data-photo="true"] {
+  background: #fff;
+  padding: 14px;
+}
+
 .pcard-fav {
   position: absolute;
   top: 6px;
@@ -466,6 +501,8 @@ button {
   aspect-ratio: 5 / 4;
   display: grid;
   place-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   font-weight: 800;
   font-size: 40px;
   letter-spacing: -0.04em;

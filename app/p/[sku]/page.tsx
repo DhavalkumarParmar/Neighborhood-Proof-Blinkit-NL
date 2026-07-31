@@ -24,6 +24,7 @@ import {
   ShieldIcon,
   TagIcon,
 } from "@/components/icons";
+import { imageFor } from "@/lib/images";
 import { etaMinutes, getItem, getProfile, getProof, getStore } from "@/lib/retrieval";
 
 export default async function ProductPage({
@@ -66,7 +67,13 @@ export default async function ProductPage({
             <ShareIcon />
           </span>
         </div>
-        <Thumb brand={item.brand} name={item.name} category={item.category} variant="pdp" />
+        <Thumb
+          brand={item.brand}
+          name={item.name}
+          category={item.category}
+          image={imageFor(item.id)}
+          variant="pdp"
+        />
       </div>
 
       <div className="dots">
