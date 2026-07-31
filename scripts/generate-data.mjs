@@ -19,8 +19,10 @@ import {
   BRANDS,
   PRODUCTS,
   ISSUES,
-  POSITIVE_LINES,
+  POSITIVE_BY_TRAIT,
+  GENERIC_POSITIVE_LINES,
   NEUTRAL_LINES,
+  traitsFor,
 } from "./catalog-source.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -179,8 +181,23 @@ const CATEGORY_RETURN_MEAN = {
   electronics: 0.11,
 };
 
-function issuesForCategory(category) {
-  return Object.keys(ISSUES).filter((k) => ISSUES[k].categories.includes(category));
+/** Issues that are both right for the category and physically possible for
+ *  this product - a kajal pencil has no pump to break. */
+function issuesFor(item, traits) {
+  return Object.keys(ISSUES).filter((key) => {
+    const issue = ISSUES[key];
+    if (!issue.categories.includes(item.category)) return false;
+    return issue.requires.some((trait) => traits.has(trait));
+  });
+}
+
+/** Praise that could plausibly be written about this product. */
+function positivesFor(traits) {
+  const lines = [...GENERIC_POSITIVE_LINES];
+  for (const trait of traits) {
+    if (POSITIVE_BY_TRAIT[trait]) lines.push(...POSITIVE_BY_TRAIT[trait]);
+  }
+  return lines;
 }
 
 function buildSkuBehaviour(catalog) {
@@ -200,11 +217,14 @@ function buildSkuBehaviour(catalog) {
     returnRate = Math.min(0.38, Math.max(0.004, returnRate));
 
     // A product people send back usually has one specific thing wrong with it.
-    const candidates = issuesForCategory(sku.category);
+    const traits = traitsFor(sku);
+    const candidates = issuesFor(sku, traits);
     const hasIssue = returnRate > mean * 1.6 ? true : rng() < 0.42;
     const issue = hasIssue && candidates.length ? pick(rng, candidates) : null;
 
     behaviour[sku.id] = {
+      traits,
+      positives: positivesFor(traits),
       popularity,
       returnRate,
       issue,
@@ -280,7 +300,7 @@ function buildHouseholdPools() {
   return pools;
 }
 
-function reviewFor(rng, sku, beh, returned) {
+function reviewFor(rng, beh, returned) {
   const issue = beh.issue ? ISSUES[beh.issue] : null;
 
   if (returned) {
@@ -292,7 +312,7 @@ function reviewFor(rng, sku, beh, returned) {
   // Plenty of people keep a product and still name the one thing wrong with
   // it. This is the case the summary must not gloss over.
   if (issue && rng() < 0.28) return pick(rng, issue.lines);
-  return rng() < 0.85 ? pick(rng, POSITIVE_LINES[sku.category]) : pick(rng, NEUTRAL_LINES);
+  return rng() < 0.85 ? pick(rng, beh.positives) : pick(rng, NEUTRAL_LINES);
 }
 
 function buildLedger(catalog, behaviour) {
@@ -345,7 +365,7 @@ function buildLedger(catalog, behaviour) {
         };
 
         if (rng() < beh.reviewRate) {
-          record.review = reviewFor(rng, sku, beh, returned);
+          record.review = reviewFor(rng, beh, returned);
         }
 
         ledger.push(record);

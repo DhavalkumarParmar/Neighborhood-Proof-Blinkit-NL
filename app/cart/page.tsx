@@ -5,6 +5,7 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { BottomNav } from "@/components/BottomNav";
 import { BackIcon, CartIcon } from "@/components/icons";
 import { getProfile } from "@/lib/retrieval";
 
@@ -20,10 +21,13 @@ export default async function CartPage({
   return (
     <>
       <div className="topbar">
-        <Link href={`/browse?p=${profile.id}`} className="iconbtn" aria-label="Back">
+        <Link href={`/browse?p=${profile.id}`} className="roundbtn" aria-label="Back">
           <BackIcon />
         </Link>
-        <div className="topbar-title">Your cart</div>
+        <div className="topbar-title">
+          <b>Your cart</b>
+          <span>Delivering to Home</span>
+        </div>
       </div>
 
       <div className="empty">
@@ -39,6 +43,8 @@ export default async function CartPage({
           Back to browsing
         </Link>
       </div>
+
+      <BottomNav profileId={profile.id} active="cart" />
     </>
   );
 }

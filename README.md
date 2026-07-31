@@ -5,7 +5,8 @@ an honest summary of what households near that dark store actually did with the
 product: how many bought it, how many sent it back, and what the recurring
 complaint was.
 
-**Concept demo. Not affiliated with Blinkit.**
+**Concept demo, built for demo and educational purposes only. Not affiliated
+with Blinkit.** That line appears at the bottom of every page in the app.
 
 ---
 
@@ -53,10 +54,17 @@ This is the point of the architecture, so it is worth stating plainly:
 - The model is given those numbers as **read-only context** so its wording
   cannot contradict them. Its only job is to name the recurring theme in the
   review text.
-- The prompt tells the model to write no digits, because the app already prints
-  them. On top of that, `sanitise()` in `lib/summarise.ts` extracts every
-  figure from the model's reply and drops any sentence containing a number we
-  did not supply. If nothing survives, no sentence is shown.
+- The model is forbidden from writing any digit at all, and `sanitise()` in
+  `lib/summarise.ts` drops any sentence containing one. If nothing survives, no
+  sentence is shown.
+
+  This started as a narrower rule - allow figures we supplied, drop the rest -
+  and the live model broke it immediately. Given a return rate of 4.2% it wrote
+  "The return rate was 4.", which passed the guard because 4 was a number we had
+  supplied, while being a naked figure that meant nothing. Banning digits
+  outright removes the whole class of failure. The plain-language read beside
+  every number ("that's low for beauty") is generated in `lib/copy.ts`, where it
+  cannot drift from the arithmetic.
 - The `/api/summary` route recomputes the facts server-side from the SKU and
   store. It does not accept numbers from the browser, so nothing the client
   sends can change a figure on the card.
@@ -126,6 +134,13 @@ Brand names are invented. Real companies are deliberately not used, because the
 return rates and complaints in this data are fabricated and should not be
 attached to anyone's actual product.
 
+**Complaints are gated by product traits.** Each SKU gets traits derived from its
+name — `liquid`, `pump`, `gear`, `food`, `makeup`, `cleaner`, `battery` and so on
+— and each complaint declares which traits make it possible. Without this, the
+generator gave a cat scratching post dog-food reviews and a kajal pencil a broken
+pump, which reads as obviously fabricated the moment anyone actually reads a card.
+Praise is picked the same way.
+
 Dates are stored as `daysAgo` (0–29) rather than absolute dates, so the "last 30
 days" window stays true whenever the demo is opened instead of quietly emptying
 out over time.
@@ -172,7 +187,7 @@ simply absent.
 ```bash
 npm run data              # regenerate the synthetic data
 npm run check:retrieval   # asserts all four states are reachable, plus invariants
-npm run check:summary     # invented-figure guard and silent-degrade path
+npm run check:summary     # figure guard and silent-degrade path
 npm run build             # typecheck and production build
 
 GEMINI_API_KEY=... npm run check:summary   # also exercises the live Gemini call
@@ -180,6 +195,12 @@ GEMINI_API_KEY=... npm run check:summary   # also exercises the live Gemini call
 
 `check:retrieval` runs the real retrieval code against the real data and prints
 the state census in the table above.
+
+With a key, `check:summary` also prints the raw model reply next to what the
+guard allowed through, so a bad key or an unavailable model is diagnosable. The
+app degrades silently by design, which means misconfiguration otherwise looks
+exactly like working-but-quiet — `diagnose()` in `lib/summarise.ts` exists only
+for this script and reports the HTTP status and response body.
 
 ---
 
@@ -198,8 +219,15 @@ Blinkit app's yellow header, green Add buttons and sticky bottom bar. Okra is
 proprietary, so the type falls back to the system sans stack.
 
 The Gemini call is a plain `fetch` to `POST /v1beta/interactions` with model
-`gemini-3.6-flash`, verified against ai.google.dev in July 2026. Note that this
-is the current Interactions API, not the older `generateContent` endpoint.
+`gemini-3.6-flash`, verified against ai.google.dev in July 2026 and confirmed
+live (HTTP 200). Note that this is the current Interactions API, not the older
+`generateContent` endpoint - code written from memory will target the wrong URL.
+
+The UI is built to match screenshots of the app: light grey page with content in
+white rounded cards, the yellow header with the delivery time and icon tab rail,
+the ADD button inside the product image box, offers as plain blue text, and the
+four-tab bottom bar. On the product page the star rating and review count are
+removed and the proof card takes their place.
 
 ## Layout
 

@@ -45,6 +45,18 @@ export function getProfile(profileId: string): Profile | undefined {
 
 export const CATEGORY_ORDER = ["beauty", "pet", "baby", "home", "electronics"];
 
+/** Promised delivery time. A thin catchment is further from its store. */
+const ETA_BY_DENSITY: Record<string, number> = {
+  high: 8,
+  medium: 11,
+  low: 13,
+  "very-low": 19,
+};
+
+export function etaMinutes(store: Store): number {
+  return ETA_BY_DENSITY[store.density] ?? 12;
+}
+
 export {
   MIN_HOUSEHOLDS,
   WINDOW_DAYS,

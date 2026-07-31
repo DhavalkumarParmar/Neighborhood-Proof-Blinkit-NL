@@ -11,7 +11,7 @@ import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildProofIndex } from "../lib/proof-core.ts";
-import { sanitise, summarise } from "../lib/summarise.ts";
+import { diagnose, sanitise, summarise } from "../lib/summarise.ts";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (f) => JSON.parse(readFileSync(join(ROOT, "data", f), "utf8"));
@@ -28,9 +28,9 @@ const check = (name, ok, detail = "") => {
 const normal = index.getProof(pointers.normal.skuId, "ST-ALK");
 const negative = index.getProof(pointers["honest-negative"].skuId, "ST-ALK");
 
-/* ------------------------------------------- invented-figure guard -------- */
+/* ---------------------------------------------------- figure guard -------- */
 
-console.log("\nInvented-figure guard:\n");
+console.log("\nFigure guard (the model may not write any digit):\n");
 
 check(
   "keeps a clean sentence with no digits",
@@ -39,21 +39,32 @@ check(
 );
 
 check(
-  "keeps a figure we actually supplied",
-  (sanitise(`${normal.households} homes bought it.`, normal) ?? "").includes(
-    String(normal.households),
-  ),
-  `households = ${normal.households}`,
+  "keeps quantities written as words",
+  sanitise("Most buyers were happy. A few said the cap leaks.", normal) ===
+    "Most buyers were happy. A few said the cap leaks.",
 );
 
 check(
-  "drops a sentence containing a figure we never supplied",
+  "drops an invented figure",
   sanitise("The pump breaks often. 87 percent of buyers complained.", normal) ===
     "The pump breaks often.",
 );
 
 check(
-  "returns null when every sentence is invented",
+  "drops a bare restated rate, the live regression this guard exists for",
+  sanitise("The pump dispenser stops working. The return rate was 4.", normal) ===
+    "The pump dispenser stops working.",
+);
+
+check(
+  "drops a supplied count too, since the card already prints it above",
+  sanitise(`${normal.households} homes bought it. The pump breaks.`, normal) ===
+    "The pump breaks.",
+  `households = ${normal.households}`,
+);
+
+check(
+  "returns null when every sentence carries a figure",
   sanitise("About 640 homes rated it 4.7 stars.", normal) === null,
 );
 
@@ -92,6 +103,23 @@ if (!process.env.GEMINI_API_KEY) {
   console.log("           The card renders its numbers without the sentence until it is.");
   console.log("           Run: GEMINI_API_KEY=... npm run check:summary\n");
 } else {
+  // diagnose() reports why a call failed. The app itself stays silent, so this
+  // is the only place a wrong key or an unavailable model becomes visible.
+  const first = await diagnose(normal);
+  console.log(`  endpoint  POST /v1beta/interactions`);
+  console.log(`  model     gemini-3.6-flash`);
+  console.log(`  status    ${first.status ?? "no response"}`);
+
+  if (!first.ok) {
+    console.log(`\n FAIL  live call did not produce a usable sentence`);
+    console.log(`\n  ${first.detail}\n`);
+    if (first.rawText) console.log(`  Raw model text was:\n  "${first.rawText}"\n`);
+    failures++;
+  } else {
+    console.log(`  raw       "${first.rawText}"`);
+    console.log(`  shown     "${first.summary}"\n`);
+  }
+
   for (const [label, facts] of [
     ["normal (low returns, real complaint)", normal],
     ["honest negative (high returns)", negative],

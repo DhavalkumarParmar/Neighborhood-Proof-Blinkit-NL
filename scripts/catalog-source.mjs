@@ -158,10 +158,51 @@ export const PRODUCTS = {
   ],
 };
 
+/*
+ * Traits derived from a product's name, so that a complaint only lands on a
+ * product it could actually happen to. Without this, a scratching post picks up
+ * dog-food reviews and a kajal pencil develops a broken pump - which reads as
+ * obviously fabricated the moment anyone actually reads the card.
+ */
+export const TRAIT_RULES = {
+  liquid:
+    /Serum|Oil|Wash|Gel|Mist|Lotion|Shampoo|Conditioner|Cleaner|Detergent|Liquid|Water|Spray|Micellar|Freshener/i,
+  pump: /Serum|Lotion|Wash|Cleaner|Shampoo|Conditioner|Sunscreen|Micellar|Detergent/i,
+  cleaner: /Cleaner|Detergent|Dishwash|Toilet|Floor|Laundry|Scrub Pad|Mop|Broom|Repellent|Killer/i,
+  topical: /Serum|Cream|Lotion|Oil|Wash|Mask|Scrub|Balm|Gel|Sunscreen|Powder|Bar/i,
+  makeup: /Kajal|Lipstick|Compact|Nail Paint|Lip Balm/i,
+  scented:
+    /Perfume|Deodorant|Freshener|Room Spray|Fabric Conditioner|Massage Oil|Powder|Cleaner|Shampoo/i,
+  gear: /Brush|Collar|Leash|Post|Clipper|Bowl|Bottle|Teether|Stand|Mop|Broom|Container|Casserole|Basket|Holder|Sleeve|Board|Scissors|Toothbrush|Raincoat|Towel|Bedsheet|Doormat|Swaddle|Pillow|Razor|Cloth|Pad|Bags|Bulb|Hooks/i,
+  food: /Food|Treat|Jerky|Flakes|Seed Mix/i,
+  battery:
+    /Earbuds|Earphone|Headphones|Speaker|Power Bank|Watch|Trimmer|Fan|Mouse|Dryer|Kettle/i,
+  charger: /Charger|Cable|Power Bank/i,
+};
+
+export function traitsFor(item) {
+  const traits = new Set();
+  for (const [trait, pattern] of Object.entries(TRAIT_RULES)) {
+    if (pattern.test(item.name)) traits.add(trait);
+  }
+  if (item.category === "electronics") traits.add("electronic");
+
+  // Makeup wins outright. "Matte Liquid Lipstick" matches the liquid rule on the
+  // word "Liquid" and would otherwise collect floor-cleaner praise.
+  if (traits.has("makeup")) {
+    traits.delete("liquid");
+    traits.delete("topical");
+  }
+
+  return traits;
+}
+
 // Recurring product issues. Each entry is one underlying complaint expressed
 // several different ways, which is what makes it detectable as "recurring".
+// `requires` lists traits, any one of which makes the issue plausible.
 export const ISSUES = {
   pump_breaks: {
+    requires: ["pump"],
     categories: ["beauty", "home"],
     lines: [
       "Product is good but the pump stopped working in 3 weeks.",
@@ -173,6 +214,7 @@ export const ISSUES = {
     ],
   },
   leaking: {
+    requires: ["liquid"],
     categories: ["beauty", "home", "baby", "pet"],
     lines: [
       "Bottle came leaking. Half of it was inside the packet.",
@@ -184,6 +226,7 @@ export const ISSUES = {
     ],
   },
   battery_drain: {
+    requires: ["battery"],
     categories: ["electronics"],
     lines: [
       "Sound is nice but battery finishes in 2 hours.",
@@ -194,6 +237,7 @@ export const ISSUES = {
     ],
   },
   cheap_plastic: {
+    requires: ["gear", "electronic"],
     categories: ["home", "electronics", "pet", "baby"],
     lines: [
       "Plastic feels very cheap for the price.",
@@ -204,6 +248,7 @@ export const ISSUES = {
     ],
   },
   size_smaller: {
+    requires: ["gear", "food", "topical", "liquid", "makeup"],
     categories: ["home", "baby", "pet", "beauty"],
     lines: [
       "Much smaller than it looks in the picture.",
@@ -213,6 +258,7 @@ export const ISSUES = {
     ],
   },
   strong_fragrance: {
+    requires: ["scented"],
     categories: ["beauty", "home", "baby"],
     lines: [
       "Smell is too strong, gives me a headache.",
@@ -222,6 +268,7 @@ export const ISSUES = {
     ],
   },
   causes_rash: {
+    requires: ["topical", "makeup"],
     categories: ["beauty", "baby"],
     lines: [
       "Gave my skin a rash on the second day.",
@@ -231,6 +278,7 @@ export const ISSUES = {
     ],
   },
   not_effective: {
+    requires: ["cleaner", "topical"],
     categories: ["home", "pet", "beauty"],
     lines: [
       "Does not clean properly. Had to scrub twice.",
@@ -240,6 +288,7 @@ export const ISSUES = {
     ],
   },
   pet_refused: {
+    requires: ["food"],
     categories: ["pet"],
     lines: [
       "My dog refused to eat it. Smell seems off.",
@@ -249,6 +298,7 @@ export const ISSUES = {
     ],
   },
   slow_charging: {
+    requires: ["charger"],
     categories: ["electronics"],
     lines: [
       "Charging is very slow, not fast charging as claimed.",
@@ -259,44 +309,57 @@ export const ISSUES = {
   },
 };
 
-export const POSITIVE_LINES = {
-  beauty: [
-    "Good product at this price. Using it daily.",
+/*
+ * Praise is picked by trait, not by category, for the same reason complaints
+ * are: "my dog finishes the bowl" must never end up under a scratching post.
+ * GENERIC lines fit anything and are always in the pool.
+ */
+export const POSITIVE_BY_TRAIT = {
+  food: [
+    "My dog finishes the bowl every time.",
+    "Cat took to it right away.",
+    "Good quantity for the price.",
+    "Coat looks shinier after a month of this.",
+    "No stomach trouble, and they finish it.",
+  ],
+  gear: [
+    "Sturdy build, using it daily.",
+    "Easy to clean and dries fast.",
+    "Fits well and feels solid.",
+    "Better made than the one I had before.",
+  ],
+  makeup: [
+    "Colour is exactly like the photo.",
+    "Stays on the whole day.",
+    "Pigment is good for the price.",
+    "Does not smudge in this heat.",
+  ],
+  topical: [
     "Skin feels better after two weeks.",
     "Texture is light and it absorbs fast.",
-    "Genuine product, same as the store one.",
-    "Repeat order. Works for me.",
-    "Nice mild smell, no irritation.",
+    "Mild, no irritation for me.",
+    "Small change but visible after a month.",
   ],
-  pet: [
-    "My dog finishes the bowl every time.",
-    "Coat looks shinier after a month.",
-    "Good quantity for the price.",
-    "Repeat buy. My cat likes it.",
-    "Sturdy and easy to clean.",
-  ],
-  baby: [
-    "No rash so far. Gentle on my baby.",
-    "Absorbs well, no leaks at night.",
-    "Mild smell, baby sleeps fine.",
-    "Good quality cotton, soft after wash.",
-    "Handy pack size for travel.",
-  ],
-  home: [
-    "Cleans well, nice fresh smell.",
-    "Value for money. Will order again.",
+  cleaner: [
     "One capful is enough for the whole floor.",
-    "Sturdy build, using it daily.",
-    "Delivered quickly and sealed properly.",
+    "Lasts much longer than I expected.",
+    "Cleans well, nice fresh smell.",
   ],
-  electronics: [
+  electronic: [
     "Sound is clear for calls and music.",
-    "Charges fast, good backup.",
-    "Fits well and feels solid.",
+    "Charges fast and the backup is good.",
     "Working fine since two months.",
-    "Good buy at this price.",
   ],
 };
+
+export const GENERIC_POSITIVE_LINES = [
+  "Good product at this price.",
+  "Genuine product, same as the shop one.",
+  "Repeat order. Works for me.",
+  "Delivered quickly and sealed properly.",
+  "Value for money. Will order again.",
+  "Exactly as described.",
+];
 
 export const NEUTRAL_LINES = [
   "Okay for the price.",

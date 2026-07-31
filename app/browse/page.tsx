@@ -10,14 +10,14 @@
 import { redirect } from "next/navigation";
 import { BrowseClient, type BrowseItem } from "@/components/BrowseClient";
 import { listingProofLine } from "@/lib/copy";
-import { CATEGORY_ORDER, catalog, getProfile, getProof, getStore } from "@/lib/retrieval";
-
-const ETA_BY_DENSITY: Record<string, number> = {
-  high: 8,
-  medium: 11,
-  low: 13,
-  "very-low": 19,
-};
+import {
+  CATEGORY_ORDER,
+  catalog,
+  etaMinutes,
+  getProfile,
+  getProof,
+  getStore,
+} from "@/lib/retrieval";
 
 export default async function BrowsePage({
   searchParams,
@@ -63,7 +63,7 @@ export default async function BrowsePage({
       categories={ordered}
       profileId={profile.id}
       storeArea={store.area}
-      eta={ETA_BY_DENSITY[store.density] ?? 12}
+      eta={etaMinutes(store)}
     />
   );
 }

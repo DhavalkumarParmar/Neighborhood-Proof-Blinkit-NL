@@ -1,15 +1,15 @@
 /**
  * Stand-in for product photography. Real catalogue images are not part of a
- * concept demo, so each SKU gets a stable tinted tile derived from its id -
+ * concept demo, so each SKU gets a stable tinted tile derived from its brand -
  * consistent between the listing and the product page.
  */
 
 const TINTS: Record<string, [string, string]> = {
-  beauty: ["#fdeff4", "#f7dbe6"],
-  pet: ["#eef4fd", "#dbe6f7"],
-  baby: ["#fff6e8", "#fbe7c8"],
-  home: ["#eefaf1", "#d6f0de"],
-  electronics: ["#f1f0fb", "#e0ddf4"],
+  beauty: ["#fdf0f5", "#f8dfe8"],
+  pet: ["#eff5fd", "#dde8f8"],
+  baby: ["#fff7ea", "#fbe9cd"],
+  home: ["#eff9f2", "#daf0e1"],
+  electronics: ["#f2f1fb", "#e3e0f5"],
 };
 
 function shortLabel(brand: string): string {
@@ -33,25 +33,44 @@ export function Thumb({
   category: string;
   variant?: "card" | "pdp";
 }) {
-  const [from, to] = TINTS[category] ?? ["#f4f4f4", "#e8e8e8"];
+  const [from, to] = TINTS[category] ?? ["#f5f5f5", "#e9e9e9"];
+  const label = `${brand} ${name}`;
 
-  return (
-    <div
-      className={variant === "pdp" ? "pdp-media" : "thumb"}
-      style={{ background: `linear-gradient(150deg, ${from}, ${to})` }}
-      role="img"
-      aria-label={`${brand} ${name}`}
-    >
-      {variant === "pdp" ? (
+  if (variant === "pdp") {
+    return (
+      <div
+        className="pdp-media"
+        style={{ background: `linear-gradient(155deg, ${from}, ${to})` }}
+        role="img"
+        aria-label={label}
+      >
         <div>
           <div>{shortLabel(brand)}</div>
-          <div style={{ fontSize: 13, fontWeight: 600, marginTop: 10, letterSpacing: 0 }}>
+          <div style={{ fontSize: 14, fontWeight: 600, marginTop: 10, letterSpacing: 0 }}>
             {brand}
           </div>
         </div>
-      ) : (
-        shortLabel(brand)
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{
+        aspectRatio: "1 / 1",
+        borderRadius: 8,
+        display: "grid",
+        placeItems: "center",
+        fontWeight: 800,
+        fontSize: 21,
+        letterSpacing: "-0.03em",
+        color: "rgba(0,0,0,0.4)",
+        background: `linear-gradient(155deg, ${from}, ${to})`,
+      }}
+      role="img"
+      aria-label={label}
+    >
+      {shortLabel(brand)}
     </div>
   );
 }
