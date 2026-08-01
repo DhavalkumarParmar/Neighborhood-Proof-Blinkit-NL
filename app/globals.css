@@ -363,21 +363,23 @@ button {
   overflow: hidden;
 }
 
+/*
+ * cover, not contain: every supplied photo is a styled scene rather than a
+ * cutout on white, so filling the frame reads like the real app. contain left
+ * pale bands above and below each one.
+ */
 .thumb img,
 .pdp-media img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
-.thumb[data-photo="true"] {
-  background: #fff;
-}
-
+.thumb[data-photo="true"],
 .pdp-media[data-photo="true"] {
   background: #fff;
-  padding: 14px;
+  padding: 0;
 }
 
 .pcard-fav {
