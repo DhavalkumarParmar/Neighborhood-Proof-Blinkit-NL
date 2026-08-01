@@ -43,3 +43,37 @@ so on are not real companies. So do not use a real brand's product photography:
 it will not match the name printed on the card, and it puts someone else's
 copyrighted image on a public URL. Generic unbranded product shots, or your own
 photos, or royalty-free stock.
+
+---
+
+## Naming map for the supplied image set
+
+Identified by sight from the images shared for this demo. Rename each to the
+filename on the right and drop it in `types/`.
+
+| The image | Rename to |
+|---|---|
+| Clear glass dropper bottle, olive-green cap, on a leaf | `10-niacinamide-face-serum.jpg` |
+| Frosted serum bottle on oranges (20% Vitamin C) | `vitamin-c-face-serum.jpg` |
+| Amber square dropper bottle, yellow label, on beige | `onion-hair-oil.jpg` |
+| Purple cleanser tube with foam swatch | `ubtan-face-wash.jpg` |
+| Green jars of cucumber aloe vera gel | `aloe-vera-gel.jpg` |
+| Clear face-mist bottle beside a pale flower | `rose-water-face-mist.jpg` |
+| Tall dark "OIL" bottle among green leaves | `body-lotion-cocoa.jpg` |
+| Amber pump bottle under a white arch, pebbles | `baby-shampoo-no-tears.jpg` |
+| White cosmetic tube on pink, yellow flowers | `baby-lotion-milky-soft.jpg` |
+| Baby on a blue blanket wearing a diaper | `baby-diaper-pants-medium.jpg` |
+| Baby on a white blanket, pink polka-dot pants | `baby-diaper-pants-large.jpg` |
+| Baby wipes pack flat-lay with toys, blue background | `baby-wet-wipes.jpg` |
+| Two bags of adult dog food, chicken and duck | `adult-dog-dry-food-chicken.jpg` |
+| Cat pawing a sisal scratching post | `cat-scratching-post.jpg` |
+| Mop, bucket and a floor-cleaner sachet | `floor-cleaner-lemon.jpg` |
+| Blue wireless earbuds in an open case | `wireless-earbuds.jpg` |
+| Black and red neckband earphones, flat-lay | `neckband-bluetooth-earphone.jpg` |
+| Black over-ear headphones beside a keyboard | `over-ear-headphones.jpg` |
+| Large black trolley party speaker outdoors | `bluetooth-party-speaker.jpg` |
+| Silver power bank, 10,000 mAh | `power-bank-10000mah.jpg` |
+| Black marbled power bank | `power-bank-20000mah.jpg` |
+
+Any extension works (`.jpg`, `.png`, `.webp`). After copying them in, run
+`npm run images` — or just `npm run build`, which rebuilds the manifest anyway.
