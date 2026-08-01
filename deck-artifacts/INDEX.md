@@ -1,5 +1,7 @@
 # Deck artifacts — index
 
+Live demo: **https://neighborhood-proof-blinkit-nl.vercel.app**
+
 Raw material for a 10-slide PM deck. Nothing here is a deck; select from it.
 
 Every figure was read from `data/*.json` or the source files, or produced by
@@ -62,17 +64,16 @@ found and closed, and it pre-empts the obvious challenge from the room.
 
 ---
 
-## Two things to fix before presenting
+## Two things before presenting
 
-**The deployed URL is not in the repo.** I never had it and nothing in the
-codebase records it. Every path in `04-screen-inventory.md` is relative — prefix
-them with your Vercel origin. The four screenshot targets:
+**Screenshot these four.** Live and verified — all four states render correctly
+in production and the model layer is running there:
 
 ```
-/p/BEA-0001?p=regular     normal
-/p/PET-0010?p=regular     widened to city
-/p/BEA-0003?p=regular     honest negative
-/p/BEA-0001?p=bachelor    no data
+https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=regular     normal
+https://neighborhood-proof-blinkit-nl.vercel.app/p/PET-0010?p=regular     widened to city
+https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0003?p=regular     honest negative
+https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=bachelor    no data
 ```
 
 Note the first and last are **the same SKU seen by two different shoppers**.

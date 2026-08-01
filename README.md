@@ -5,6 +5,8 @@ an honest summary of what households near that dark store actually did with the
 product: how many bought it, how many sent it back, and what the recurring
 complaint was.
 
+**Live demo: https://neighborhood-proof-blinkit-nl.vercel.app**
+
 **Concept demo, built for demo and educational purposes only. Not affiliated
 with Blinkit.** That line appears at the bottom of every page in the app.
 
@@ -89,10 +91,10 @@ profile picker on the home screen:
 
 | State | URL |
 |---|---|
-| Normal | `/p/BEA-0001?p=regular` |
-| Widened to city | `/p/PET-0010?p=regular` |
-| Honest negative | `/p/BEA-0003?p=regular` |
-| No data | `/p/BEA-0001?p=bachelor` |
+| Normal | [https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=regular](https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=regular) |
+| Widened to city | [https://neighborhood-proof-blinkit-nl.vercel.app/p/PET-0010?p=regular](https://neighborhood-proof-blinkit-nl.vercel.app/p/PET-0010?p=regular) |
+| Honest negative | [https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0003?p=regular](https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0003?p=regular) |
+| No data | [https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=bachelor](https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=bachelor) |
 
 Screenshots of each are in [`screenshots/`](./screenshots).
 

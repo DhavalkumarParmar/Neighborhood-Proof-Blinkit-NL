@@ -5,20 +5,13 @@ shell (`--shell: 430px` in `app/globals.css`).
 
 ---
 
-## ⚠ The deployed base URL is not in the repo
+## Live demo
 
-I do not have your Vercel URL — it was never shared with me and nothing in the
-codebase records it. **Every path below is relative.** Prefix them with your
-deployment origin before putting them in the deck.
+**https://neighborhood-proof-blinkit-nl.vercel.app**
 
-```
-https://<your-vercel-domain>/p/BEA-0001?p=regular
-```
-
-There is no `vercel.json`, no environment file, and no deployment metadata
-committed, so I cannot infer it. Fill this in yourself.
-
----
+Verified live: all seven routes return HTTP 200, and the model layer is running
+in production — `/api/summary` returns real complaint sentences, so the
+`GEMINI_API_KEY` is set on Vercel.
 
 ## The four proof-card state URLs
 
@@ -26,12 +19,12 @@ These are the screenshot targets. All four are also linked from the profile
 picker at `/` under "Jump straight to a state", so you can reach them by
 clicking rather than typing.
 
-| State | Path | What the card says | Product |
+| State | URL | What the card says | Product |
 |---|---|---|---|
-| **Normal** | `/p/BEA-0001?p=regular` | "212 homes near you" · "9 sent it back. That's low for beauty." | Aurvi 10% Niacinamide Face Serum |
-| **Widened to city** | `/p/PET-0010?p=regular` | "Too few orders near you. Showing all of Vadodara instead." · "41 homes in Vadodara" | Bhaukaal Pet Co Cat Scratching Post |
-| **Honest negative** | `/p/BEA-0003?p=regular` | "11 of 38 sent it back. That's high." | Sattva Skin Onion Hair Oil |
-| **No data** | `/p/BEA-0001?p=bachelor` | "New here. No orders yet to show you." | Same serum, seen from the thin store |
+| **Normal** | [https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=regular](https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=regular) | "212 homes near you" · "9 sent it back. That's low for beauty." | Aurvi 10% Niacinamide Face Serum |
+| **Widened to city** | [https://neighborhood-proof-blinkit-nl.vercel.app/p/PET-0010?p=regular](https://neighborhood-proof-blinkit-nl.vercel.app/p/PET-0010?p=regular) | "Too few orders near you. Showing all of Vadodara instead." · "41 homes in Vadodara" | Bhaukaal Pet Co Cat Scratching Post |
+| **Honest negative** | [https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0003?p=regular](https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0003?p=regular) | "11 of 38 sent it back. That's high." | Sattva Skin Onion Hair Oil |
+| **No data** | [https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=bachelor](https://neighborhood-proof-blinkit-nl.vercel.app/p/BEA-0001?p=bachelor) | "New here. No orders yet to show you." | Same serum, seen from the thin store |
 
 Note the fourth row: **same SKU as the first, different shopper.** That is the
 sharpest way to demo the moat — one product, two pincodes, and the card changes
@@ -44,7 +37,9 @@ redirects to `/` without a valid one.
 
 ---
 
-## Screen 1 — Profile picker · `/`
+## Screen 1 — Profile picker
+
+https://neighborhood-proof-blinkit-nl.vercel.app/
 
 **Demonstrates:** that proof is local, so which store serves you decides what
 can be said.
@@ -66,7 +61,9 @@ The state links exist so an evaluator does not have to hunt through 150 SKUs.
 
 ---
 
-## Screen 2 — Browse listing · `/browse?p=regular`
+## Screen 2 — Browse listing
+
+https://neighborhood-proof-blinkit-nl.vercel.app/browse?p=regular
 
 **Demonstrates:** the proof line replacing the star rating at listing level —
 the concept visible before you even open a product.
@@ -96,7 +93,9 @@ The listing search and category tabs are live client-side filters, not decoratio
 
 ---
 
-## Screen 3 — Product page · `/p/[sku]?p=[profile]`
+## Screen 3 — Product page
+
+https://neighborhood-proof-blinkit-nl.vercel.app/p/[sku]?p=[profile]
 
 **Demonstrates:** all four proof-card states. This is the concept screen.
 
@@ -124,7 +123,9 @@ state — green for normal/widened, amber for negative, neutral grey for no data
 
 ---
 
-## Screen 4 — Cart · `/cart?p=regular`
+## Screen 4 — Cart
+
+https://neighborhood-proof-blinkit-nl.vercel.app/cart?p=regular
 
 **Demonstrates:** nothing about the concept. Deliberately a stub.
 
