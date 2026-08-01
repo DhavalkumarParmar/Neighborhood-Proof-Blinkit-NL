@@ -1,0 +1,45 @@
+%% Anti-hallucination boundary — Neighborhood Proof
+%% The point: every figure on screen is counted in code. The model only ever
+%% sees review prose, and is forbidden from emitting a digit at all.
+
+flowchart TB
+    subgraph CODE ["◼ COMPUTED IN CODE — the model never produces any of this"]
+        direction TB
+        L[("ledger.json<br/>56,522 rows")]
+        N["households = distinct household IDs<br/>returns = rows with returned:true<br/>returnRate = returns / households<br/>categoryReturnRate = network-wide<br/>verdict = ratio vs baseline"]
+        W["Plain-language read, also in code<br/>“That's low for beauty.”"]
+    end
+
+    subgraph SENT ["◻ SENT TO THE MODEL"]
+        direction TB
+        R["Review strings only<br/>max 24, returners first"]
+        X["Counts included as read-only context<br/>so wording cannot contradict them"]
+    end
+
+    subgraph GEN ["◼ MODEL-GENERATED"]
+        M["Gemini 3.6 Flash<br/>prompt forbids writing any digit"]
+    end
+
+    subgraph GUARD ["◼ ENFORCED IN CODE"]
+        G{"sanitise()<br/>does the sentence<br/>contain a digit?"}
+        K["Keep sentence"]
+        DROP["Drop sentence"]
+        NUL["Nothing renders<br/>numbers stand alone"]
+    end
+
+    UI["PROOF CARD<br/>all figures from code · one sentence from model"]
+
+    L --> N --> W --> UI
+    L --> R --> M
+    N -.->|context only| X --> M
+    M --> G
+    G -->|no digit| K --> UI
+    G -->|digit found| DROP --> NUL --> UI
+
+    classDef code  fill:#D6E9F5,stroke:#0072B2,stroke-width:3px,color:#10243A
+    classDef model fill:#FBEBCF,stroke:#E69F00,stroke-width:3px,color:#3D2A05
+    classDef data  fill:#EDEDED,stroke:#5A5A5A,stroke-width:3px,color:#1A1A1A
+
+    class N,W,G,K,UI code
+    class M model
+    class L,R,X,DROP,NUL data

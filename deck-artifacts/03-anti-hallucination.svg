@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1260 780" width="1260" height="780" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#1A1A1A"/>
+    </marker>
+    <marker id="a3g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#6B6B6B"/>
+    </marker>
+  </defs>
+  <rect width="1260" height="780" fill="#FFFFFF"/>
+
+  <text x="30" y="42" font-size="25" font-weight="700" fill="#1A1A1A">Where the numbers come from — and what the model is allowed to touch</text>
+  <text x="30" y="68" font-size="16" fill="#4A4A4A">The model never sees a request to produce a figure, and cannot emit one: any sentence containing a digit is discarded in code.</text>
+
+  <!-- ===== LEFT ZONE: computed in code ===== -->
+  <rect x="24" y="96" width="560" height="512" rx="14" fill="#F2F8FC" stroke="#0072B2" stroke-width="4"/>
+  <rect x="24" y="96" width="560" height="44" rx="14" fill="#0072B2"/>
+  <rect x="24" y="124" width="560" height="16" fill="#0072B2"/>
+  <text x="44" y="127" font-size="18" font-weight="700" fill="#FFFFFF">COMPUTED IN CODE — never generated</text>
+
+  <rect x="52" y="164" width="504" height="70" rx="9" fill="#EDEDED" stroke="#5A5A5A" stroke-width="3"/>
+  <text x="304" y="192" font-size="17" font-weight="700" text-anchor="middle" fill="#1A1A1A">ledger.json — 56,522 purchase rows</text>
+  <text x="304" y="216" font-size="15" text-anchor="middle" fill="#1A1A1A">one row per household per SKU per store</text>
+
+  <rect x="52" y="266" width="504" height="176" rx="9" fill="#D6E9F5" stroke="#0072B2" stroke-width="3"/>
+  <text x="304" y="296" font-size="17" font-weight="700" text-anchor="middle" fill="#10243A">lib/proof-core.ts — counted, not asked for</text>
+  <text x="76" y="326" font-size="15" fill="#10243A">households   = count of distinct household IDs</text>
+  <text x="76" y="350" font-size="15" fill="#10243A">returns      = rows where returned is true</text>
+  <text x="76" y="374" font-size="15" fill="#10243A">returnRate   = returns / households</text>
+  <text x="76" y="398" font-size="15" fill="#10243A">baseline     = same rate, network-wide, per category</text>
+  <text x="76" y="422" font-size="15" fill="#10243A">verdict      = low / normal / high, from the ratio</text>
+
+  <rect x="52" y="472" width="504" height="106" rx="9" fill="#D6E9F5" stroke="#0072B2" stroke-width="3"/>
+  <text x="304" y="502" font-size="17" font-weight="700" text-anchor="middle" fill="#10243A">lib/copy.ts — the plain-language read</text>
+  <text x="304" y="528" font-size="15" text-anchor="middle" fill="#10243A">“9 sent it back. That’s low for beauty.”</text>
+  <text x="304" y="556" font-size="15" font-style="italic" text-anchor="middle" fill="#10243A">also code, so wording cannot drift from arithmetic</text>
+
+  <!-- ===== THE BOUNDARY ===== -->
+  <line x1="608" y1="96" x2="608" y2="700" stroke="#1A1A1A" stroke-width="5" stroke-dasharray="14 8"/>
+  <rect x="546" y="640" width="128" height="34" rx="6" fill="#FFFFFF"/>
+  <text x="610" y="664" font-size="17" font-weight="700" text-anchor="middle" fill="#1A1A1A">BOUNDARY</text>
+
+  <!-- ===== RIGHT ZONE: model ===== -->
+  <rect x="632" y="96" width="600" height="512" rx="14" fill="#FEF8EE" stroke="#E69F00" stroke-width="4"/>
+  <rect x="632" y="96" width="600" height="44" rx="14" fill="#E69F00"/>
+  <rect x="632" y="124" width="600" height="16" fill="#E69F00"/>
+  <text x="652" y="127" font-size="18" font-weight="700" fill="#3D2A05">WHAT THE MODEL RECEIVES AND RETURNS</text>
+
+  <rect x="660" y="164" width="544" height="94" rx="9" fill="#FFFFFF" stroke="#5A5A5A" stroke-width="3"/>
+  <text x="932" y="192" font-size="17" font-weight="700" text-anchor="middle" fill="#1A1A1A">IN: review strings only</text>
+  <text x="932" y="216" font-size="15" text-anchor="middle" fill="#1A1A1A">max 24 · people who returned it listed first</text>
+  <text x="932" y="240" font-size="15" font-style="italic" text-anchor="middle" fill="#1A1A1A">counts also passed, read-only, as context</text>
+
+  <rect x="660" y="290" width="544" height="94" rx="9" fill="#FBEBCF" stroke="#E69F00" stroke-width="3"/>
+  <text x="932" y="318" font-size="17" font-weight="700" text-anchor="middle" fill="#3D2A05">Gemini 3.6 Flash</text>
+  <text x="932" y="342" font-size="15" text-anchor="middle" fill="#3D2A05">names the recurring complaint</text>
+  <text x="932" y="366" font-size="15" font-weight="700" text-anchor="middle" fill="#3D2A05">prompt forbids writing any digit</text>
+
+  <rect x="660" y="416" width="544" height="80" rx="9" fill="#D6E9F5" stroke="#0072B2" stroke-width="3"/>
+  <text x="932" y="446" font-size="17" font-weight="700" text-anchor="middle" fill="#10243A">sanitise() — enforced in code, not trusted to the prompt</text>
+  <text x="932" y="472" font-size="15" text-anchor="middle" fill="#10243A">any sentence containing a digit is discarded</text>
+
+  <rect x="660" y="522" width="262" height="62" rx="9" fill="#FFFFFF" stroke="#0072B2" stroke-width="3"/>
+  <text x="791" y="548" font-size="16" font-weight="700" text-anchor="middle" fill="#10243A">no digit → keep</text>
+  <text x="791" y="570" font-size="15" text-anchor="middle" fill="#10243A">sentence shown</text>
+
+  <rect x="942" y="522" width="262" height="62" rx="9" fill="#EDEDED" stroke="#5A5A5A" stroke-width="3"/>
+  <text x="1073" y="548" font-size="16" font-weight="700" text-anchor="middle" fill="#1A1A1A">digit → drop</text>
+  <text x="1073" y="570" font-size="15" text-anchor="middle" fill="#1A1A1A">numbers stand alone</text>
+
+  <!-- arrows within left -->
+  <line x1="304" y1="234" x2="304" y2="260" stroke="#1A1A1A" stroke-width="2.5" marker-end="url(#a3)"/>
+  <line x1="304" y1="442" x2="304" y2="466" stroke="#1A1A1A" stroke-width="2.5" marker-end="url(#a3)"/>
+
+  <!-- crossing the boundary: review strings -->
+  <path d="M556 199 H 654" fill="none" stroke="#1A1A1A" stroke-width="3" marker-end="url(#a3)"/>
+  <text x="606" y="188" font-size="15" font-weight="700" text-anchor="middle" fill="#1A1A1A">prose</text>
+
+  <!-- arrows within right -->
+  <line x1="932" y1="258" x2="932" y2="284" stroke="#1A1A1A" stroke-width="2.5" marker-end="url(#a3)"/>
+  <line x1="932" y1="384" x2="932" y2="410" stroke="#1A1A1A" stroke-width="2.5" marker-end="url(#a3)"/>
+  <path d="M860 496 V 516" fill="none" stroke="#1A1A1A" stroke-width="2.5" marker-end="url(#a3)"/>
+  <path d="M1010 496 V 516" fill="none" stroke="#6B6B6B" stroke-width="2.5" stroke-dasharray="7 4" marker-end="url(#a3g)"/>
+
+  <!-- final card -->
+  <rect x="330" y="700" width="600" height="62" rx="10" fill="#FFFFFF" stroke="#1A1A1A" stroke-width="4"/>
+  <text x="630" y="727" font-size="18" font-weight="700" text-anchor="middle" fill="#1A1A1A">PROOF CARD</text>
+  <text x="630" y="750" font-size="15" text-anchor="middle" fill="#1A1A1A">every figure from the left · at most one sentence from the right</text>
+
+  <path d="M304 578 V 731 H 324" fill="none" stroke="#0072B2" stroke-width="3" marker-end="url(#a3)"/>
+  <path d="M791 584 V 731 H 936" fill="none" stroke="#E69F00" stroke-width="3" marker-end="url(#a3)"/>
+</svg>

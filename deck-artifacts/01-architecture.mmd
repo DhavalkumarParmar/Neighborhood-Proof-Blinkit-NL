@@ -1,0 +1,34 @@
+%% System architecture — Neighborhood Proof
+%% Blue  = deterministic code (no model involved)
+%% Orange = model-generated
+%% Grey  = data at rest / silent fallback
+%% Palette is Okabe-Ito derived: safe for deuteranopia and protanopia.
+
+flowchart LR
+    A[("Synthetic data<br/>ledger · catalog · stores<br/>56,522 rows")]
+    B["Retrieval layer<br/>lib/proof-core.ts<br/><b>counts rows, in code</b>"]
+    C["Plain-language copy<br/>lib/copy.ts<br/><b>'that's low for beauty'</b>"]
+    D["/api/summary<br/>recomputes facts<br/>server-side"]
+    E["Gemini 3.6 Flash<br/>receives review text only<br/><b>writes 1–2 sentences</b>"]
+    F["Figure guard<br/>sanitise()<br/><b>drops any digit</b>"]
+    G["Proof card<br/>numbers render first,<br/>sentence arrives after"]
+    H["Silent fallback<br/>numbers alone,<br/>no error shown"]
+
+    A --> B
+    B --> C
+    C --> G
+    B --> D
+    D --> E
+    E --> F
+    F -->|sentence| G
+    E -.->|timeout · HTTP error · no key| H
+    F -.->|every sentence dropped| H
+    H --> G
+
+    classDef code   fill:#D6E9F5,stroke:#0072B2,stroke-width:3px,color:#10243A
+    classDef model  fill:#FBEBCF,stroke:#E69F00,stroke-width:3px,color:#3D2A05
+    classDef data   fill:#EDEDED,stroke:#5A5A5A,stroke-width:3px,color:#1A1A1A
+
+    class B,C,D,F,G code
+    class E model
+    class A,H data

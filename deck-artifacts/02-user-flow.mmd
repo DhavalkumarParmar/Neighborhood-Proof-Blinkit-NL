@@ -1,0 +1,44 @@
+%% User flow — Neighborhood Proof
+%% The four proof-card states are decided in code by lib/proof-core.ts getProof().
+%% Thresholds shown are the real constants: MIN_HOUSEHOLDS = 30, WINDOW_DAYS = 30.
+
+flowchart TD
+    P["Screen 1 · Profile picker<br/>3 shoppers, each bound to a dark store"]
+    B["Screen 2 · Browse listing<br/>150 non-grocery SKUs<br/>proof line replaces the star rating"]
+    D["Screen 3 · Product page<br/>proof card sits directly under the price"]
+
+    Q1{"Households at this store<br/>in last 30 days<br/>&ge; 30 ?"}
+    Q2{"Households across<br/>the whole city<br/>&ge; 30 ?"}
+    Q3{"Return rate vs<br/>category baseline"}
+
+    S1["<b>NORMAL</b><br/>'212 homes near you'<br/>'9 sent it back. That's low for beauty.'"]
+    S2["<b>WIDENED</b><br/>'Too few orders near you.<br/>Showing all of Vadodara instead.'"]
+    S3["<b>NEGATIVE</b><br/>'11 of 38 sent it back.<br/>That's high.'"]
+    S4["<b>NO DATA</b><br/>'New here.<br/>No orders yet to show you.'"]
+
+    C["Screen 4 · Cart<br/>stub — checkout not built"]
+
+    P --> B --> D --> Q1
+    Q1 -->|yes| Q3
+    Q1 -->|no| Q2
+    Q2 -->|yes, widened: true| S2
+    Q2 -->|no, noData: true| S4
+    Q3 -->|"ratio &lt; 0.75 → low"| S1
+    Q3 -->|"0.75–1.4 → normal"| S1
+    Q3 -->|"ratio &gt; 1.4 → high"| S3
+    S1 --> C
+    S2 --> C
+    S3 --> C
+    S4 --> C
+
+    classDef screen fill:#D6E9F5,stroke:#0072B2,stroke-width:3px,color:#10243A
+    classDef gate   fill:#FFFFFF,stroke:#5A5A5A,stroke-width:3px,color:#1A1A1A
+    classDef good   fill:#D6E9F5,stroke:#0072B2,stroke-width:3px,color:#10243A
+    classDef warn   fill:#FBEBCF,stroke:#E69F00,stroke-width:3px,color:#3D2A05
+    classDef none   fill:#EDEDED,stroke:#5A5A5A,stroke-width:3px,color:#1A1A1A
+
+    class P,B,D,C screen
+    class Q1,Q2,Q3 gate
+    class S1 good
+    class S2,S3 warn
+    class S4 none
