@@ -16,7 +16,7 @@
  * Run: npm run images   (also runs as part of npm run data)
  */
 
-import { readdirSync, existsSync, writeFileSync, readFileSync } from "node:fs";
+import { readdirSync, existsSync, writeFileSync, readFileSync, mkdirSync } from "node:fs";
 import { join, dirname, extname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -46,6 +46,10 @@ function indexDir(dir) {
   }
   return found;
 }
+
+// Create the drop folders if they are missing, so "cp ... public/products/types/"
+// works on a fresh clone without a mkdir first.
+mkdirSync(TYPES_DIR, { recursive: true });
 
 const catalog = JSON.parse(readFileSync(join(ROOT, "data", "catalog.json"), "utf8"));
 
